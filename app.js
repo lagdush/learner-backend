@@ -11,7 +11,7 @@ const quizzes = require('./api/routes/quiz');
 
 
 mongoose
-  .connect(process.env.LEARNER_CONNECTION, {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
