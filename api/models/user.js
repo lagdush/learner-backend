@@ -57,8 +57,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// userSchema.index({ '$**': 'text' });
-
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
     {
