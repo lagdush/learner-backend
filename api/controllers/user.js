@@ -50,7 +50,7 @@ exports.deleteUser = async (req, res, next) => {
     });
   }
 
-  user = await User.findByIdAndRemove(req.params.id);
+  user = await User.findByIdAndRemove(req.params.id).select('-password');
   if (!user) {
     return res.status(404).send({ message: 'Podany użytkownik nie istnieje.' });
   }
