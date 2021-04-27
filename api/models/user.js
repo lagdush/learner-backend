@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const jwt = require('jwt');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
   _id: mongoose.Types.ObjectId,
@@ -57,6 +57,8 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 });
+
+// userSchema.index({ '$**': 'text' });
 
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
