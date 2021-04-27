@@ -7,9 +7,23 @@ const quizSchema = new mongoose.Schema({
   },
   questions: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Question',
-      required: true,
+      question: {
+        type: String,
+        required: true,
+      },
+      answers: [
+        {
+          text: {
+            type: String,
+            required: true,
+          },
+          isCorrect: {
+            type: Boolean,
+            required: true,
+            default: false,
+          },
+        },
+      ],
     },
   ],
   userID: {

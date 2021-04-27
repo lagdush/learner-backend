@@ -104,3 +104,79 @@ exports.addPost = async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 };
+
+exports.deletePost = async (req, res) => {
+  const isIdValid = mongoose.Types.ObjectId.isValid(req.params.id);
+  if (isIdValid) {
+    const post = await Post.findByIdAndRemove(req.params.id);
+
+    if (!post) {
+      return res
+        .status(404)
+        .send({ message: 'Post, którego szukasz nie istnieje' });
+    }
+
+    res.status(202).send({
+      message: 'Post został usunięty',
+      request: {
+        type: 'DELETE',
+      },
+      post,
+    });
+  } else {
+    res.status(400).send({ message: 'Podano błędny numer _id' });
+  }
+};
+
+exports.deleteMyPost = async (req, res) => {
+  const isIdValid = mongoose.Types.ObjectId.isValid(req.params.id);
+  if (isIdValid) {
+    const post = await Post.findById(req.params.id);
+
+    if (!post) {
+      return res
+        .status(404)
+        .send({ message: 'Post, którego szukasz nie istnieje' });
+    }
+
+    if (post.userID != req.user._id) {
+      return res
+        .status(403)
+        .send({ message: 'Brak uprawnień do wykonania tej operacji.' });
+    }
+
+    await Post.findByIdAndRemove(req.params.id);
+
+    res.status(202).send({
+      message: 'Post został usuniety',
+      request: {
+        type: 'DELETE',
+      },
+      post,
+    });
+  } else {
+    res.status(400).send({ message: 'Podano błędny numer _id' });
+  }
+};
+
+exports.updateMyPost = async (req, res) => {
+  const isIdValid = mongoose.Types.ObjectId.isValid(req.params.id);
+  if (!isIdValid) {
+    res.status(400).send({ message: 'Podano błędny numer _id' });
+    return;
+  }
+  try {
+    let post = await Post.findByIdAndUpdate(req.params.id, ...req.body, {
+      new: true,
+    });
+    res.status(200).send({
+      message: 'Post został zaktualizowany',
+      request: {
+        type: 'PUT',
+      },
+      post,
+    });
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
