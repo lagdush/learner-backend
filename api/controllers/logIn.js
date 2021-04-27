@@ -1,0 +1,30 @@
+const Joi = require('joi');
+const bcrypt = require('bcrypt');
+const { User } = require('../models/user');
+
+exports.logIn = async(req, res, next) => {
+    try{
+        let user = await User.findOne({ email: req.body.email });
+        if(!user) return res.status(400).send({ message: 'Nieprawidłowy email lub hasło.' });
+
+        const validPassword = await bcrypt.compare(req.body.password, user.password)
+        if(!validPassword) return res.status(400).send({ message: 'Nieprawidłowy email lub hasło.' });
+
+        const token = user.generateAuthToken();
+        res.status(200).send({
+            message: 'Logowanie przebiegło pomyślnie.',
+            token: token
+        });
+
+    } catch (error) {
+        res.status(400).send({
+            message: error.message,
+            error
+        });
+    }
+}
+
+const loginSchema = Joi.object({
+    email: Joi.string().min(5).max(255).required().email(),
+    password: Joi.string().min(8).max(255).regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z<>!@#$%^&*?_=+-]{8,}$/).required()
+});

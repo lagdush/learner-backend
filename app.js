@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const app = express();
 const users = require('./api/routes/user');
+const login = require('./api/routes/logIn')
 
 mongoose
   .connect(process.env.LEARNER_CONNECTION, {
@@ -22,5 +23,6 @@ mongoose
 app.use(cors());
 app.use(express.json());
 app.use('/api/users', users);
+app.use('/api/login', login);
 
 module.exports = app;
