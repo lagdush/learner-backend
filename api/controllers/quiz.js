@@ -1,29 +1,32 @@
 const mongoose = require('mongoose');
 const { Quiz } = require('../models/quiz');
 
-
 //all
 exports.getAllQuizzes = async (req, res) => {
-  const results = {
-    allQuizzesInDatabase: await Quiz.countDocuments(),
-  };
-  let search;
-  const term = req.query.search;
-  if (term) {
-    search = {
-      $text: { $search: term },
+  try {
+    const results = {
+      allQuizzesInDatabase: await Quiz.countDocuments(),
     };
+    let search;
+    const term = req.query.search;
+    if (term) {
+      search = {
+        $text: { $search: term },
+      };
+    }
+
+    results.results = await Quiz.find(search);
+
+    res.send({
+      request: {
+        type: 'GET',
+        description: 'Get all quizzes',
+      },
+      quizzes: results,
+    });
+  } catch (error) {
+    res.status(400).send({ message: error.message });
   }
-
-  results.results = await Quiz.find(search);
-
-  res.send({
-    request: {
-      type: 'GET',
-      description: 'Get all quizzes',
-    },
-    quizzes: results,
-  });
 };
 
 //logged
