@@ -9,5 +9,5 @@ router.get('/', quizController.getAllQuizzes);
 //user
 router.get('/me', auth.loggedUser, quizController.getMyQuizzes);
 router.get('/me/:id', auth.loggedUser, quizController.getMyQuizzes);
-
+router.post('/me/addquiz', auth.loggedUser, quizController.addQuiz);
 module.exports = router;
