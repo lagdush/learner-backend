@@ -6,7 +6,6 @@ const app = express();
 const users = require('./api/routes/user');
 const posts = require('./api/routes/posts');
 const login = require('./api/routes/logIn');
-// const addQuizzes = require('./api/routes/addQuiz');
 const quizzes = require('./api/routes/quiz');
 
 
@@ -29,6 +28,5 @@ app.use(express.json());
 app.use('/api/users', users);
 app.use('/api/login', login);
 app.use('/api/posts', posts);
-// app.use('/api/addQuiz', addQuizzes);
 app.use('/api/quizzes', quizzes);
 module.exports = app;
