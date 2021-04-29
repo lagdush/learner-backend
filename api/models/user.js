@@ -45,6 +45,12 @@ const userSchema = new mongoose.Schema({
       ref: 'Post',
     },
   ],
+  videos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Video',
+    },
+  ],
   quizzes: [
     {
       type: mongoose.Schema.Types.ObjectId,

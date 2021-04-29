@@ -5,6 +5,7 @@ const auth = require('../middleware/authorization');
 
 //all
 router.post('/', userController.addUser);
+router.get('/content/:id', userController.getOneUserContent);
 //admin
 router.get('/', [auth.loggedUser, auth.isAdmin], userController.getAllUsers);
 router.get('/:id', [auth.loggedUser, auth.isAdmin], userController.getOneUser);

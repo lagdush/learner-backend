@@ -37,6 +37,20 @@ exports.getOneUser = async (req, res, next) => {
   }
   res.status(200).send({ user: user });
 };
+
+exports.getOneUserContent = async (req, res, next) => {
+  const isIdValid = mongoose.Types.ObjectId.isValid(req.params.id);
+  if (!isIdValid) {
+    res.status(400).send({ message: 'Podano nieprawidłowy numer id' });
+  }
+  const user = await User.findById(req.params.id).select(
+    '-password, -name, -lastName, -email, -isAdmin'
+  );
+  if (!user) {
+    res.status(400).send({ message: 'Podany użytkownik nie istnieje' });
+  }
+  res.status(200).send({ user: user });
+};
 exports.deleteUser = async (req, res, next) => {
   const isIdValid = mongoose.Types.ObjectId.isValid(req.params.id);
   if (!isIdValid) {
