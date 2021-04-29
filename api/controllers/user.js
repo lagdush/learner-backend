@@ -44,7 +44,7 @@ exports.getOneUserContent = async (req, res, next) => {
     res.status(400).send({ message: 'Podano nieprawidłowy numer id' });
   }
   const user = await User.findById(req.params.id).select(
-    '-password, -name, -lastName, -email, -isAdmin'
+    '-password -name -lastName -email -isAdmin'
   );
   if (!user) {
     res.status(400).send({ message: 'Podany użytkownik nie istnieje' });
