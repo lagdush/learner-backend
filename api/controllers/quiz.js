@@ -61,6 +61,10 @@ exports.addQuiz = async (req, res) => {
       questions: req.body.questions,
       userID: req.user._id,
     });
+    let user = await User.findByIdAndUpdate(req.user._id, {
+      $push: { quizzes: quiz},
+    });
+    user = await user.save();
     quiz = await quiz.save();
     res.status(201).send({
       message: 'Quiz został dodany',

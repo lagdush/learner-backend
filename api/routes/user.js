@@ -11,7 +11,6 @@ router.get('/content/:id', userController.getOneUserContent);
 router.get('/me', auth.loggedUser, userController.userMe);
 router.delete('/:id', auth.loggedUser, userController.deleteMe);
 
-
 //admin
 router.get('/', [auth.loggedUser, auth.isAdmin], userController.getAllUsers);
 router.get('/:id', [auth.loggedUser, auth.isAdmin], userController.getOneUser);

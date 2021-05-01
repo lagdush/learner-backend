@@ -97,7 +97,7 @@ exports.addPost = async (req, res) => {
       userID: req.user._id,
     });
     let user = await User.findByIdAndUpdate(req.user._id, {
-      posts: post,
+      $push: { posts: post },
     });
     post = await post.save();
     user = await user.save();
