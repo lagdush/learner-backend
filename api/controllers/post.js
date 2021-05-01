@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Post } = require('../models/posts');
+const { User } = require('../models/user');
 
 exports.getAllPosts = async (req, res) => {
   const results = {
@@ -95,7 +96,11 @@ exports.addPost = async (req, res) => {
       ...req.body,
       userID: req.user._id,
     });
+    let user = await User.findByIdAndUpdate(req.user._id, {
+      posts: post,
+    });
     post = await post.save();
+    user = await user.save();
     res.status(201).send({
       message: 'Post został dodany',
       post,

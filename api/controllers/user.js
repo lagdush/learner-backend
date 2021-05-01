@@ -45,7 +45,7 @@ exports.getOneUserContent = async (req, res, next) => {
   }
   const user = await User.findById(req.params.id).select(
     '-password -name -lastName -email -isAdmin'
-  );
+  ).populate('posts');
   if (!user) {
     res.status(400).send({ message: 'Podany użytkownik nie istnieje' });
   }
@@ -77,15 +77,22 @@ exports.deleteUser = async (req, res, next) => {
 
 //logged
 exports.userMe = async (req, res, next) => {
-  const user = await User.findById(req.user._id).select('-password');
+  const user = await User
+  .findById(req.user._id)
+  .select('-isAdmin')
+  .populate('posts')
+  // .populate('quizzes')
+  // .populate('videos');
   if (!user) {
     return res
       .status(404)
       .send({ message: 'Użytkownik o podanym id nie istnieje.' });
   }
-
   res.send(user);
 };
+
+
+
 exports.deleteMe = async (req, res, next) => {
   let user = await User.findById(req.user._id).select('-password');
   if (!user)
