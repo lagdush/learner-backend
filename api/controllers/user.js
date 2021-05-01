@@ -43,9 +43,15 @@ exports.getOneUserContent = async (req, res, next) => {
   if (!isIdValid) {
     res.status(400).send({ message: 'Podano nieprawidłowy numer id' });
   }
-  const user = await User.findById(req.params.id).select(
-    '-password -name -lastName -email -isAdmin'
-  ).populate('posts');
+  const user = await User.findById(req.params.id)
+    .select('-password -name -lastName -email -isAdmin -__v')
+    .populate({ path: 'posts', select: '-userID -__v' })
+    .populate({ path: 'quizzes', select: '-userID -__v' })
+    .populate({
+      path: 'videos',
+      select: '-userID -__v',
+      options: { retainNullValues: true },
+    });
   if (!user) {
     res.status(400).send({ message: 'Podany użytkownik nie istnieje' });
   }
@@ -77,10 +83,9 @@ exports.deleteUser = async (req, res, next) => {
 
 //logged
 exports.userMe = async (req, res, next) => {
-  const user = await User
-  .findById(req.user._id)
-  .select('-isAdmin')
-  .populate('posts')
+  const user = await User.findById(req.user._id)
+    .select('-isAdmin')
+    .populate('posts');
   // .populate('quizzes')
   // .populate('videos');
   if (!user) {
@@ -90,8 +95,6 @@ exports.userMe = async (req, res, next) => {
   }
   res.send(user);
 };
-
-
 
 exports.deleteMe = async (req, res, next) => {
   let user = await User.findById(req.user._id).select('-password');

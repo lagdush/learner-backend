@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Quiz } = require('../models/quiz');
+const { User } = require('../models/user');
 
 //all
 exports.getAllQuizzes = async (req, res) => {

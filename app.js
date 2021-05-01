@@ -7,7 +7,7 @@ const users = require('./api/routes/user');
 const posts = require('./api/routes/posts');
 const login = require('./api/routes/logIn');
 const quizzes = require('./api/routes/quiz');
-
+const videos = require('./api/routes/video');
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -29,4 +29,5 @@ app.use('/api/users', users);
 app.use('/api/login', login);
 app.use('/api/posts', posts);
 app.use('/api/quizzes', quizzes);
+app.use('/api/video', videos);
 module.exports = app;

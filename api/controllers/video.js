@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { User } = require('../models/user');
 const { Video } = require('../models/video');
 
 exports.getAllVideos = async (req, res) => {
@@ -18,7 +19,7 @@ exports.getAllVideos = async (req, res) => {
   res.send({
     request: {
       type: 'GET',
-      description: 'Get all posts',
+      description: 'Get all videos',
     },
     videos: results,
   });
@@ -32,7 +33,7 @@ exports.addVideo = async (req, res) => {
       userID: req.user._id,
     });
     let user = await User.findByIdAndUpdate(req.user._id, {
-      $push: { videos: video},
+      $push: { videos: video },
     });
     user = await user.save();
     video = await video.save();
