@@ -44,7 +44,7 @@ exports.getOneUserContent = async (req, res, next) => {
     res.status(400).send({ message: 'Podano nieprawidłowy numer id' });
   }
   const user = await User.findById(req.params.id)
-    .select('-password -name -lastName -email -isAdmin -__v')
+    .select('-password -name -lastName -isAdmin -__v')
     .populate({ path: 'posts', select: '-userID -__v' })
     .populate({ path: 'quizzes', select: '-userID -__v' })
     .populate({
